@@ -2,10 +2,10 @@
 
 Project: high-speed visible-light communication using NLTCP coding and a dual-branch reservoir-computing (RC) equalizer.
 
-## Work areas
+## Three method branches
 
-- [`neural-network/`](neural-network/README.md): neural branch experiments and reports.
-- [`rc-equalizer/`](rc-equalizer/README.md): RC equalizer implementation and baselines.
-- [`system-integration/`](system-integration/README.md): shared signal chain, data contracts, and end-to-end evaluation.
+- [`method-1-weighted-sum/`](method-1-weighted-sum/README.md): directly combine the linear and nonlinear branch outputs with fixed or validation-selected weights.
+- [`method-2-output-feature-fusion/`](method-2-output-feature-fusion/README.md): use both branch outputs as features for a learned linear/readout fusion.
+- [`method-3-neural-network/`](method-3-neural-network/README.md): learn a neural fusion or residual correction from the branch outputs.
 
-Keep raw captures, derived signal arrays, model checkpoints, and meeting notes out of Git. See `.gitignore` before adding experiment outputs.
+All three methods use the same receiver inputs, symbol alignment, train/validation/test split, NLTCP decoder, and BER scoring convention. Keep raw captures, derived signal arrays, model checkpoints, and meeting notes out of Git. See `.gitignore` before adding experiment outputs.
