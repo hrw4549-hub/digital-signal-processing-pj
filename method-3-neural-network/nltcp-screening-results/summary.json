@@ -1,0 +1,97 @@
+{
+  "captures": 19,
+  "total_runs": 57,
+  "seeds_per_capture": [
+    3
+  ],
+  "models": {
+    "linear_fir": {
+      "mean_BER": 0.0007072492338369333,
+      "median_BER": 0.0006350231406737703,
+      "capture_bootstrap_95pct": [
+        0.0006387052552271864,
+        0.0007817412436483523
+      ]
+    },
+    "nonlinear_esn": {
+      "mean_BER": 0.000762292125750821,
+      "median_BER": 0.0007354787787464571,
+      "capture_bootstrap_95pct": [
+        0.0006928960680681361,
+        0.000836500895981208
+      ]
+    },
+    "weighted_sum": {
+      "mean_BER": 0.0007247156746672407,
+      "median_BER": 0.0006780755569906361,
+      "capture_bootstrap_95pct": [
+        0.0006532448870534965,
+        0.0008013791879332385
+      ]
+    },
+    "output_feature_ridge": {
+      "mean_BER": 0.0007280201364459474,
+      "median_BER": 0.000690632511749722,
+      "capture_bootstrap_95pct": [
+        0.0006553219773143979,
+        0.0008053469023975284
+      ]
+    },
+    "dual_mlp": {
+      "mean_BER": 0.0007573826396795993,
+      "median_BER": 0.000739066480106196,
+      "capture_bootstrap_95pct": [
+        0.0006818497244078875,
+        0.0008387691729593059
+      ]
+    },
+    "linear_only_mlp": {
+      "mean_BER": 0.0007452977508889002,
+      "median_BER": 0.0007013956158289384,
+      "capture_bootstrap_95pct": [
+        0.0006616453009609376,
+        0.0008350870584058897
+      ]
+    },
+    "weighted_sum_minus_linear_fir": {
+      "mean_paired_BER_difference": 1.7466440830307416e-05,
+      "captures_better": 4,
+      "captures_worse": 13,
+      "captures_tied": 2,
+      "paired_capture_bootstrap_95pct": [
+        4.1541805218028635e-06,
+        3.200607265661736e-05
+      ]
+    },
+    "output_feature_ridge_minus_linear_fir": {
+      "mean_paired_BER_difference": 2.0770902609014145e-05,
+      "captures_better": 6,
+      "captures_worse": 13,
+      "captures_tied": 0,
+      "paired_capture_bootstrap_95pct": [
+        5.853618007994871e-06,
+        3.45552288859054e-05
+      ]
+    },
+    "dual_mlp_minus_linear_only_mlp": {
+      "mean_paired_BER_difference": 1.2084888790699146e-05,
+      "captures_better": 6,
+      "captures_worse": 12,
+      "captures_tied": 1,
+      "paired_capture_bootstrap_95pct": [
+        -8.686013818315061e-06,
+        3.351904408529646e-05
+      ]
+    },
+    "nonlinear_esn_minus_linear_fir": {
+      "mean_paired_BER_difference": 5.50428919138876e-05,
+      "captures_better": 2,
+      "captures_worse": 17,
+      "captures_tied": 0,
+      "paired_capture_bootstrap_95pct": [
+        3.738762469622556e-05,
+        7.184844038845366e-05
+      ]
+    }
+  }
+}
