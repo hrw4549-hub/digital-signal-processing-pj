@@ -1,9 +1,9 @@
-# Method 1: Weighted Sum
+# 方法一：加权求和
 
-Combine the linear and nonlinear RC branch symbol estimates directly:
+直接组合线性与非线性 RC 分支的符号估计：
 
 `y = alpha * y_linear + (1 - alpha) * y_nonlinear`
 
-Start with the existing fixed system weight as the baseline. If tuning `alpha`, choose it from the validation interval only and freeze it before testing. Record the selected value per capture and seed. Compare against both branches alone so a useful branch is not mistaken for a useful fusion.
+先以系统现有固定权重为基线。若调节 `alpha`，只能使用验证集选择，并在测试前固定。按捕获和随机种子记录所选权重；同时与两个单支结果比较，确认收益确实来自融合。
 
-Keep the shared preprocessing, symbol alignment, NLTCP decoder, and BER calculation identical to the other method folders.
+预处理、符号对齐、NLTCP 解码和 BER 计算应与其他方法目录保持一致。

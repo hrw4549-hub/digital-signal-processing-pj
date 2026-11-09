@@ -1,11 +1,11 @@
-# Digital Signal Processing Project
+# 数字信号处理课程项目
 
-Project: high-speed visible-light communication using NLTCP coding and a dual-branch reservoir-computing (RC) equalizer.
+项目主题：基于 NLTCP 编码与双分支储备池计算（RC）均衡器的高速可见光通信系统。
 
-## Three method branches
+## 三种方法
 
-- [`method-1-weighted-sum/`](method-1-weighted-sum/README.md): directly combine the linear and nonlinear branch outputs with fixed or validation-selected weights.
-- [`method-2-output-feature-fusion/`](method-2-output-feature-fusion/README.md): use both branch outputs as features for a learned linear/readout fusion.
-- [`method-3-neural-network/`](method-3-neural-network/README.md): learn a neural fusion or residual correction from the branch outputs.
+- [方法一：加权求和](method-1-weighted-sum/README.md)：直接按固定或验证集选出的权重组合线性、非线性分支输出。
+- [方法二：输出特征融合](method-2-output-feature-fusion/README.md)：把两个分支输出作为特征，训练线性读出层完成融合。
+- [方法三：神经网络融合](method-3-neural-network/README.md)：用神经网络融合分支输出，或学习相对较强分支的残差修正。
 
-All three methods use the same receiver inputs, symbol alignment, train/validation/test split, NLTCP decoder, and BER scoring convention. Keep raw captures, derived signal arrays, model checkpoints, and meeting notes out of Git. See `.gitignore` before adding experiment outputs.
+三种方法应共用接收信号、符号对齐、训练/验证/测试划分、NLTCP 解码和 BER 计分口径。原始采集数据、派生信号数组、模型权重和讨论纪要不提交到 Git；提交实验文件前请检查 `.gitignore`。

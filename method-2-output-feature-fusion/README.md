@@ -1,7 +1,7 @@
-# Method 2: Output-Feature Fusion
+# 方法二：输出特征融合
 
-Use the linear and nonlinear branch outputs as features, for example `[Re(y_linear), Im(y_linear), Re(y_nonlinear), Im(y_nonlinear)]`, and fit a linear readout to the transmitted symbol I/Q target. This lets the readout learn a global combination while keeping the model smaller and easier to diagnose than an MLP.
+将线性、非线性分支的输出作为特征，例如 `[Re(y_linear), Im(y_linear), Re(y_nonlinear), Im(y_nonlinear)]`，并以发射符号 I/Q 为目标拟合线性读出层。该方法让读出层学习全局组合，模型比 MLP 更小，也更便于诊断。
 
-Fit feature normalization and readout coefficients on training symbols only. Select regularization on validation data only. Include linear-only and nonlinear-only readouts as ablations, and report held-out BER by capture and seed.
+特征归一化和读出系数只能由训练符号拟合；正则强度只能用验证集选择。应加入仅线性分支、仅非线性分支的消融，并按捕获和随机种子报告留出测试集 BER。
 
-Keep the shared preprocessing, symbol alignment, NLTCP decoder, and BER calculation identical to the other method folders.
+预处理、符号对齐、NLTCP 解码和 BER 计算应与其他方法目录保持一致。

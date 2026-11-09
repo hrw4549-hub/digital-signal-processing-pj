@@ -1,11 +1,11 @@
-# Method 3: Neural-Network Fusion
+# 方法三：神经网络融合
 
-Use a compact MLP to fuse the two branch outputs, preferably as a residual correction around the stronger single branch:
+用小型 MLP 融合两个分支的输出；一种可行结构是围绕较强单支学习残差修正：
 
 `y = y_linear + delta([y_linear, y_nonlinear])`
 
-Compare it with an equal-capacity linear-only MLP residual ablation. The key question is whether the nonlinear branch contributes complementary information beyond what a nonlinear mapping of the linear output already provides. Normalize from training data only; choose architecture, early stopping, and correction strength on validation data only.
+应与容量相当、只使用较强单支输出的 MLP 消融比较。重点检查非线性分支是否提供了超出单支非线性映射的互补信息。归一化参数仅由训练集拟合；网络结构、早停轮次和修正强度仅由验证集选择。
 
-The [local M6 ablation](M6-ablation-local.md) checks a related historical 64APSK package. It found only a small, uncertain residual gain and is not direct validation of this project's NLTCP/PAM4 chain. A separate [19-capture NLTCP/PAM4 screen](NLTCP-case-screening.md) now compares the three assigned methods and neural ablations on the supplied project captures. It uses historical data and is exploratory, not a final held-out result.
+本目录中的 [NLTCP/PAM4 融合实验](NLTCP-case-screening.md)报告数据范围、分割方法，并区分“相对最佳单支 RC 的变化”和“相对原 LMS 链路的变化”。材料中另有历史 64APSK M6 结果，只能作为旁证，不能视为本项目 NLTCP/PAM4 链路的直接验证。
 
-Use the shared preprocessing, symbol alignment, NLTCP decoder, and BER calculation documented at the repository root. Do not claim a neural-branch gain unless it beats the linear-only ablation on held-out captures.
+使用仓库统一的预处理、符号对齐、NLTCP 解码和 BER 计分方式。只有在留出捕获上优于单支消融时，才能报告神经分支带来的收益。

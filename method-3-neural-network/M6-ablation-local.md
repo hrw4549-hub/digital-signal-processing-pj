@@ -1,44 +1,37 @@
-# Local M6 Ablation Study
+# 历史 M6 消融分析
 
-Status: exploratory local analysis; not pushed. This reproduces and probes the supplied historical M6 package. It is not a new NLTCP/PAM4 result.
+> 范围说明：这是对提供的历史 M6 复现包所做的探索分析，不是新的 NLTCP/PAM4 实验结果，也不能直接代表本项目链路性能。
 
-## Data and protocol
+## 数据与方法
 
-- Source: the supplied standalone M6 reproducibility archive, with 19 historical CH1/CH3 captures and seeds 100-104.
-- Labels: the package's 64APSK reference and historical six-bit scoring convention.
-- Test interval: symbols 20001-51200 (187200 scored bits per record).
-- PBS weight: the original validation-selected weight for each seed/fold, held fixed for all three candidates below.
-- Neural output: package-frozen M6 checkpoints and original validation-selected checkpoint and branch correction strengths. No test result was used to tune a parameter.
-- Validation correction-strength selection: all 25 seed/fold combinations chose checkpoint 4 (the first saved checkpoint); CH1 correction was zero in 11/25 choices, while CH3 correction was zero in 18/25 and 1.5 in 7/25. This shows the nonlinear/neural correction was not consistently selected across channels.
-- RC outputs: recomputed from the package's frozen CAP and RC coefficients. The standalone M6 inference outputs matched the archived outputs within 9.7e-7 maximum absolute difference. The package integrity check passed for all 430 manifested files, and the official scorer reproduced all 95 error counts.
+- 数据：独立 M6 复现包中的 19 组历史 CH1/CH3 捕获、随机种子 100–104。
+- 标签：该包的 64APSK 参考信号及历史六比特计分方式。
+- 测试区间：第 20,001–51,200 个符号，每条记录计分 187,200 bit。
+- PBS 权重：使用原验证集为每个随机种子/折选出的权重，对下列三种候选固定该权重。
+- 神经输出：使用包内冻结的 M6 检查点及原验证集选定的检查点和分支修正强度；没有用测试结果调参。
+- 修正强度选择：25 组种子/折均选择第 4 个检查点（保存的第一个检查点）；CH1 有 11/25 组将修正置零，CH3 有 18/25 组置零，其余 7 组取 1.5，说明各通道对神经修正的选择并不一致。
+- RC 输出：根据冻结的 CAP 和 RC 系数重新计算。独立 M6 推理输出与归档输出的最大绝对差为 `9.7e-7`；包内 430 个清单文件完整性检查通过，官方计分器重现了全部 95 条错误计数。
 
-The analysis script and compact per-record results are stored alongside this note. The script regenerates the frozen RC branch endpoints, checks the M6 output error counts against the archive, and writes a paired comparison without changing validation-selected settings.
+## 配对结果
 
-## Paired results
+95 条捕获/随机种子记录的平均值：
 
-Mean across the 95 capture/seed records:
+| 候选输出 | 平均 BER |
+| --- | ---: |
+| 线性 RC 输出 | 8.19276e-5 |
+| 非线性 RC 输出 | 8.17027e-5 |
+| M6 神经残差输出 | 8.15340e-5 |
 
-| Candidate | Mean BER |
-|---|---:|
-| Linear RC outputs | 8.19276e-5 |
-| Nonlinear RC outputs | 8.17027e-5 |
-| M6 neural residual outputs | 8.15340e-5 |
+神经残差相对线性输出端点，在 19 个捕获均值上的平均 BER 差为 `-3.94e-7`：5 个捕获改善、2 个变差、12 个持平。捕获级配对 bootstrap 95% 区间为 `[-1.07e-6, 1.69e-7]`，包含零。相对非线性 RC 端点，平均差为 `-1.69e-7`：9 个捕获改善、8 个变差、2 个持平，95% 区间为 `[-3.71e-6, 3.09e-6]`。
 
-The neural residual minus linear-output endpoint averaged -3.94e-7 BER across the 19 capture-level means. It improved 5 captures, worsened 2, and tied 12. A capture-level paired bootstrap 95% interval was [-1.07e-6, 1.69e-7], which includes zero. Against the nonlinear RC endpoint, the mean difference was -1.69e-7; it improved 9 captures, worsened 8, and tied 2, with a 95% interval [-3.71e-6, 3.09e-6].
+解释：在该历史 M6 设置中，学习到的残差只对线性端点带来很小的数值变化，没有清晰的捕获级证据支持稳定收益。非线性 RC 输出也与线性端点接近。这些结果不能证明神经融合或非线性支路是端到端 BER 改善的主要来源；原包报告中更有力的对照是联合线性接收/FIR 与旧的独立接收机之间的差异。
 
-Interpretation: in this historical M6 setup, the learned residual makes a very small numerical change over the linear endpoint, with no clear capture-level evidence of a reliable gain. Direct nonlinear RC output is similarly close. These data do not support presenting neural fusion or the nonlinear branch as the main source of the reported end-to-end BER improvement. The package report's stronger comparison is joint linear reception/FIR against the old independent receiver.
+## 限制
 
-## Scope and caveats
+- 该比较只隔离了联合输入线性 RC 上的输出修正；没有训练一个移除非线性支路的 M6、比较同等计算量的替代方案，也没有用新的锁箱验证因果贡献。
+- 这是历史 64APSK 数据，不是小组的 NLTCP/PAM4 实验。输出修正和 PBS 已按原验证流程选定，历史测试区间也参与过早期开发。
+- 当前 NN 数据目录没有可行性脚本所需的 `afterLMS` 数组。助教 MATLAB 参考接收机可用于生成项目所需信号阶段；NLTCP 输入、符号对齐、训练切分和 BER 计分约定仍需明确后才能移植 M6 架构。
 
-- This comparison isolates the output correction on top of the package's joint-input linear RC. It does not retrain an M6 without the nonlinear branch, does not compare matched-compute alternatives, and does not establish causal contribution under a new lockbox.
-- The package is historical 64APSK data, not the team's NLTCP/PAM4 experiment. Its output corrections and PBS are already selected by the published validation protocol, and its historical test interval has been used during prior development.
-- The available NN-data folder does not contain the `afterLMS` arrays expected by the supplied 64APSK feasibility script. The provided MATLAB reference does give a route to generate the project-specific signal stages, but the NLTCP inputs, alignment, training split, and scored BER convention still need to be made explicit before porting this M6 architecture.
+## 对本组工作的启示
 
-## Next experiment for our branch
-
-1. Generate and freeze aligned symbol-rate arrays from the same NLTCP/PAM4 captures: Volterra-LMS waveform output, CAP-demodulated samples, transmitted reference symbols/bits, and the symbol-LMS baseline output. Save a manifest with capture IDs, channel names, sample/symbol offsets, edge trimming, normalization, and checksum.
-2. Agree on one chronological train/validation/test split per capture and one NLTCP decoder/BER routine. Fit all normalization and RC/MLP parameters on train only; select checkpoints and fusion strength on validation only.
-3. Compare linear RC, nonlinear RC, fixed fusion, linear-only MLP residual, and dual-input MLP residual under the same features, symbols, seeds, and parameter budget. Report the incremental dual-input residual against the linear-only MLP ablation, not just against LMS.
-4. Keep an untouched capture or newly acquired measurement set for the final decision. Retain per-capture results and paired uncertainty; do not select architecture using that final set.
-
-The immediate blocker for a project-specific experiment is producing and freezing the aligned NLTCP/PAM4 symbol arrays and evaluation contract. Once those exist, the MLP output-fusion ablation is the smallest useful first experiment; copying the larger BiLSTM M6 model is not justified by this ablation.
+本目录的 NLTCP/PAM4 实验现已生成对齐符号流，并固定了时间顺序切分和计分方式。接下来应继续在同一特征、符号、随机种子和参数预算下比较线性 RC、非线性 RC、固定融合、单支 MLP 消融和双输入 MLP；最终确认需使用未参与开发的新采集数据或完全留出的捕获，并保留逐捕获结果及配对不确定性。
